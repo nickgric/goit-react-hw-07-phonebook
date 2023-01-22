@@ -10,7 +10,9 @@ export const Filter = () => {
 
   return (
     <>
-      <p>Find contacts by name:</p>
+      <p>
+        Find contacts by <b>name:</b>
+      </p>
       <input
         onInput={filterHandler}
         type="text"
