@@ -1,10 +1,8 @@
-import { useState } from 'react';
-import { nanoid } from 'nanoid';
-
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { selectContacts } from 'redux/contacts/contactsSelectors';
 import { hideForm } from 'redux/edit/editSlice';
-import { useEffect } from 'react';
 import { selectEdit } from 'redux/edit/editSelectors';
 import { addContact, deleteContact } from 'redux/contacts/contactsOperations';
 
@@ -32,13 +30,9 @@ export const EditContact = () => {
       return alert(`${name} is already in contacts!`);
     }
 
-    const { id } = editedContact;
-
     dispatch(hideForm());
-    dispatch(deleteContact(id));
+    dispatch(deleteContact(editedContact.id));
     dispatch(addContact({ ...editedContact, name, number }));
-
-    event.target.reset();
   };
 
   const inputHandler = ({ target }) => {

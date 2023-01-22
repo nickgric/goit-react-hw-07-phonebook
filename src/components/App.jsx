@@ -1,11 +1,11 @@
+import { useSelector } from 'react-redux';
+import { selectForm } from 'redux/edit/editSelectors';
+
 import { Section } from './Section';
 import { AddContact } from './AddContact';
 import { Filter } from './Filter';
 import { Contacts } from './Contacts';
 import { EditContact } from './EditContact';
-
-import { useSelector } from 'react-redux';
-import { selectForm } from 'redux/edit/editSelectors';
 
 export const App = () => {
   const form = useSelector(selectForm);
