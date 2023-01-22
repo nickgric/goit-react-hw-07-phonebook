@@ -2,12 +2,22 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { addContact } from 'redux/contacts/contactsOperations';
 import { selectContacts } from 'redux/contacts/contactsSelectors';
+import { hideForm } from 'redux/edit/editSlice';
+import { useEffect } from 'react';
+import { selectEdit } from 'redux/edit/editSelectors';
+import { addContact, deleteContact } from 'redux/contacts/contactsOperations';
 
-export const AddContact = () => {
+export const EditContact = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const editedContact = useSelector(selectEdit);
+
+  useEffect(() => {
+    setName(editedContact.name);
+    setNumber(editedContact.number);
+  }, [editedContact]);
 
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
@@ -15,13 +25,18 @@ export const AddContact = () => {
   const submitHandler = event => {
     event.preventDefault();
 
-    const id = nanoid();
-
-    if (contacts.find(contact => contact.name === name)) {
+    if (
+      contacts.find(contact => contact.name === name) &&
+      editedContact.name !== name
+    ) {
       return alert(`${name} is already in contacts!`);
     }
 
-    dispatch(addContact({ name, number, id }));
+    const { id } = editedContact;
+
+    dispatch(hideForm());
+    dispatch(deleteContact(id));
+    dispatch(addContact({ ...editedContact, name, number }));
 
     event.target.reset();
   };
@@ -45,6 +60,7 @@ export const AddContact = () => {
         <label>
           <input
             onInput={inputHandler}
+            value={name}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -56,6 +72,7 @@ export const AddContact = () => {
         <label>
           <input
             onInput={inputHandler}
+            value={number}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
@@ -65,7 +82,10 @@ export const AddContact = () => {
           <b>→ number</b>
         </label>
       </div>
-      <button type="submit">Add contact</button>
+      <button type="submit">Save edits</button>
+      <button type="button" onClick={() => dispatch(hideForm())}>
+        Close
+      </button>
     </form>
   );
 };
