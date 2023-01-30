@@ -1,5 +1,4 @@
-import { useSelector } from 'react-redux';
-import { selectForm } from 'redux/edit/editSelectors';
+import { useState } from 'react';
 
 import { Section } from './Section';
 import { AddContact } from './AddContact';
@@ -8,7 +7,8 @@ import { Contacts } from './Contacts';
 import { EditContact } from './EditContact';
 
 export const App = () => {
-  const form = useSelector(selectForm);
+  const [form, setForm] = useState(false);
+
   return (
     <>
       <h1>React-HW07 'Redux Async' @nickgric</h1>
@@ -17,12 +17,12 @@ export const App = () => {
       </Section>
       {form && (
         <Section title="Edit contact">
-          <EditContact />
+          <EditContact setForm={setForm} />
         </Section>
       )}
       <Section title="Contacts">
         <Filter />
-        <Contacts />
+        <Contacts setForm={setForm} />
       </Section>
     </>
   );

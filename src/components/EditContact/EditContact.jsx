@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { selectContacts } from 'redux/contacts/contactsSelectors';
-import { hideForm } from 'redux/edit/editSlice';
-import { selectEdit } from 'redux/edit/editSelectors';
+
+import { selectEdit } from 'redux/contacts/contactsSelectors';
 import { addContact, deleteContact } from 'redux/contacts/contactsOperations';
 
-export const EditContact = () => {
+export const EditContact = ({ setForm }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -30,7 +30,7 @@ export const EditContact = () => {
       return alert(`${name} is already in contacts!`);
     }
 
-    dispatch(hideForm());
+    setForm(false);
     dispatch(deleteContact(editedContact.id));
     dispatch(addContact({ ...editedContact, name, number }));
   };
@@ -77,7 +77,7 @@ export const EditContact = () => {
         </label>
       </div>
       <button type="submit">Save edits</button>
-      <button type="button" onClick={() => dispatch(hideForm())}>
+      <button type="button" onClick={() => setForm(false)}>
         Close
       </button>
     </form>

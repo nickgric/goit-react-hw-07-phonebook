@@ -11,9 +11,9 @@ import { useEffect } from 'react';
 
 import { fetchContacts } from 'redux/contacts/contactsOperations';
 import { selectFilter } from 'redux/filter/filterSelectors';
-import { showForm, editContact } from 'redux/edit/editSlice';
+import { editContact } from 'redux/contacts/contactsSlice';
 
-export const Contacts = () => {
+export const Contacts = ({ setForm }) => {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
   const loading = useSelector(selectLoading);
@@ -38,7 +38,7 @@ export const Contacts = () => {
     const id = name;
     const contact = contacts.find(contact => contact.id === id);
     dispatch(editContact(contact));
-    dispatch(showForm());
+    setForm(true);
   };
 
   return (

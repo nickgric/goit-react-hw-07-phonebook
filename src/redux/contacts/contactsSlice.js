@@ -5,11 +5,17 @@ const initialState = {
   items: [],
   loading: false,
   error: null,
+  editedItem: { name: '', number: '', id: '' },
 };
 
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState,
+  reducers: {
+    editContact: (state, { payload }) => {
+      state.editedItem = payload;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
@@ -58,3 +64,4 @@ const contactsSlice = createSlice({
 });
 
 export const contactsReducer = contactsSlice.reducer;
+export const { editContact, showForm, hideForm } = contactsSlice.actions;
